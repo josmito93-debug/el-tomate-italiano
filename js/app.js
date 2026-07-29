@@ -659,8 +659,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const modeBtns = document.querySelectorAll(".mode");
 
   function openCheckout() {
-    closeCart();
+    cartDrawer.classList.remove("on");
     checkoutPanel.classList.add("on");
+    scrim.classList.add("on");
+    orderBar.classList.remove("on");
+    
+    // Pre-seleccionar Delivery por defecto si aún no hay modo activo
+    const deliveryBtn = document.querySelector('.mode[data-mode="delivery"]');
+    if (deliveryBtn && !document.querySelector('.mode.on')) {
+      deliveryBtn.classList.add("on");
+      checkoutMode = "delivery";
+      const delOnly = document.querySelectorAll('[data-only="delivery"]');
+      const pickOnly = document.querySelectorAll('[data-only="pickup"]');
+      delOnly.forEach(el => { el.removeAttribute("hidden"); el.style.display = "block"; });
+      pickOnly.forEach(el => { el.setAttribute("hidden", "true"); el.style.display = "none"; });
+    }
+
     setStep(1);
   }
 
