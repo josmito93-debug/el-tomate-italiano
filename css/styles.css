@@ -1079,7 +1079,7 @@ body {
 
 /* ═══════════ FOOTER ═══════════ */
 .footer {
-  background: #ede6da;
+  background: #f0e8dc;
   border-top: 1px solid var(--border-color);
   padding: 80px 40px 40px 40px;
   position: relative;
@@ -1093,36 +1093,66 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 48px;
 }
 .footer__in .brand {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  text-decoration: none;
 }
-.footer__in .brand svg, .footer__in .brand__logo-slot {
-  width: 60px;
-  height: 60px;
+.footer__in .brand__logo-slot {
+  width: 72px;
+  height: 72px;
+}
+.footer__in .brand__logo-slot svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.footer__in .brand__t {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .footer__in .brand__n {
-  font-size: 1.6rem;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--rosso);
+  font-weight: 800;
+  line-height: 1.1;
+}
+.footer__in .brand__s {
+  font-size: 0.85rem;
+  color: var(--oro);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-top: 4px;
 }
 
 .footer__claim {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
-  max-width: 460px;
-  margin-bottom: 30px;
+  max-width: 500px;
+  margin-bottom: 28px;
+  line-height: 1.5;
 }
 
 .footer__base {
   max-width: 1200px;
   margin: 0 auto;
-  border-top: 1px solid rgba(44, 30, 28, 0.08);
-  padding-top: 30px;
+  border-top: 1px solid rgba(44, 30, 28, 0.1);
+  padding-top: 28px;
   display: flex;
   justify-content: space-between;
-  font-size: 0.78rem;
+  align-items: center;
+  font-size: 0.82rem;
   color: var(--text-muted);
   letter-spacing: 0.02em;
   font-weight: 500;
