@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="card-outer">
           <article class="card">
             <div class="card__img-wrap">
-              <img class="card__img" src="${item.image}" alt="${item.name}" loading="lazy"/>
+              <img class="card__img" src="${item.image}" alt="${item.name} de El Tomate Italiano" width="110" height="110" loading="lazy"/>
               ${badgeHtml}
             </div>
             <div class="card__body">
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <b id="price-${item.id}">Ref ${initialPrice}</b>
                 </div>
                 <button class="btn btn--rosso card__add" data-id="${item.id}" data-cat="pastichos">
-                  <svg class="icon"><use href="#i-plus"/></svg> Agregar
+                  <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Agregar
                 </button>
               </div>
             </div>
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="card-outer">
           <article class="card">
             <div class="card__img-wrap">
-              <img class="card__img" src="${item.image}" alt="${item.name}" loading="lazy"/>
+              <img class="card__img" src="${item.image}" alt="${item.name} de El Tomate Italiano" width="110" height="110" loading="lazy"/>
               ${badgeHtml}
             </div>
             <div class="card__body">
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <b id="price-${item.id}">Ref ${initialPrice}</b>
                 </div>
                 <button class="btn btn--rosso card__add" data-id="${item.id}" data-cat="salsas">
-                  <svg class="icon"><use href="#i-plus"/></svg> Agregar
+                  <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Agregar
                 </button>
               </div>
             </div>

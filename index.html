@@ -1019,20 +1019,22 @@
   </div>
 </div>
 
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
 <!-- ═══════════ TOPBAR ═══════════ -->
 <header class="topbar" id="topbar">
   <a class="brand" href="#inicio" data-nav="inicio">
     <div class="brand__logo-slot" aria-hidden="true"></div>
     <span class="brand__t"><span class="brand__n">El Tomate Italiano</span><span class="brand__s">Cocina tradicional</span></span>
   </a>
-  <nav class="topnav" aria-label="Secciones">
+  <nav class="topnav" aria-label="Secciones principales">
     <a href="#menu" data-nav="menu">Menú</a>
     <a href="#pastichos">Pastichos</a>
     <a href="#salsas">Salsas</a>
     <a href="#nosotros">Nosotros</a>
   </nav>
   <button class="cartbtn" id="cartOpen" aria-label="Abrir tu pedido">
-    <svg class="icon"><use href="#i-bag"/></svg> Tu pedido
+    <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg> Tu pedido
     <span class="badge" id="cartBadge">0</span>
   </button>
 </header>
@@ -1185,12 +1187,12 @@
     <div class="step" data-step="2">
       <h3 id="datosT">Tus datos</h3>
       <p id="datosP">Para coordinar la entrega de tu pedido.</p>
-      <div class="field"><label for="fNombre">Nombre y apellido</label><input class="in" id="fNombre" autocomplete="name" placeholder="Ej: Valentina Rossi"/></div>
-      <div class="field"><label for="fTel">Teléfono <small>(WhatsApp)</small></label><input class="in" id="fTel" inputmode="tel" autocomplete="tel" placeholder="0412-000-0000"/></div>
+      <div class="field"><label for="fNombre">Nombre y apellido</label><input class="in" id="fNombre" autocomplete="name" spellcheck="false" placeholder="Ej: Valentina Rossi…"/></div>
+      <div class="field"><label for="fTel">Teléfono <small>(WhatsApp)</small></label><input class="in" id="fTel" type="tel" inputmode="tel" autocomplete="tel" spellcheck="false" placeholder="0412-000-0000…"/></div>
       <div data-only="delivery">
-        <div class="field"><label for="fDir">Dirección de entrega</label><textarea class="in" id="fDir" rows="2" placeholder="Urbanización, calle, edificio o casa, piso/apto"></textarea></div>
-        <div class="field"><label for="fRef">Punto de referencia</label><input class="in" id="fRef" placeholder="Ej: frente a la panadería"/></div>
-        <div class="field"><button class="geo" id="fGeo" type="button"><svg class="icon"><use href="#i-pin"/></svg> <span>Compartir mi ubicación GPS (opcional)</span></button></div>
+        <div class="field"><label for="fDir">Dirección de entrega</label><textarea class="in" id="fDir" rows="2" autocomplete="street-address" spellcheck="false" placeholder="Urbanización, calle, edificio o casa, piso/apto…"></textarea></div>
+        <div class="field"><label for="fRef">Punto de referencia</label><input class="in" id="fRef" autocomplete="off" spellcheck="false" placeholder="Ej: frente a la panadería…"/></div>
+        <div class="field"><button class="geo" id="fGeo" type="button"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg> <span>Compartir mi ubicación GPS (opcional)</span></button></div>
       </div>
       <div data-only="pickup" hidden>
         <div class="field"><label for="fHora">Hora aproximada de retiro</label><input class="in" id="fHora" type="time"/></div>
@@ -1202,19 +1204,19 @@
       <h3>Pago móvil</h3>
       <p>Realiza el pago a estos datos y registra tu comprobante.</p>
       <div class="pmcard">
-        <h4><svg class="icon"><use href="#i-phone"/></svg> Datos para pagar</h4>
-        <div class="pmrow"><span>Banco</span><b id="pmBanco"></b><button class="copy" data-copy="pmBanco" aria-label="Copiar banco"><svg class="icon"><use href="#i-copy"/></svg></button></div>
-        <div class="pmrow"><span>Teléfono</span><b id="pmTel"></b><button class="copy" data-copy="pmTel" aria-label="Copiar teléfono"><svg class="icon"><use href="#i-copy"/></svg></button></div>
-        <div class="pmrow"><span>C.I. / RIF</span><b id="pmCi"></b><button class="copy" data-copy="pmCi" aria-label="Copiar cédula"><svg class="icon"><use href="#i-copy"/></svg></button></div>
+        <h4><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Datos para pagar</h4>
+        <div class="pmrow"><span>Banco</span><b id="pmBanco"></b><button class="copy" data-copy="pmBanco" aria-label="Copiar banco"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></div>
+        <div class="pmrow"><span>Teléfono</span><b id="pmTel"></b><button class="copy" data-copy="pmTel" aria-label="Copiar teléfono"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></div>
+        <div class="pmrow"><span>C.I. / RIF</span><b id="pmCi"></b><button class="copy" data-copy="pmCi" aria-label="Copiar cédula"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></div>
         <div class="pmtotal"><span>Monto a pagar</span><b id="pmMonto">Ref 0</b></div>
       </div>
       <div class="frow">
-        <div class="field"><label for="fBanco">Tu banco</label><select class="in" id="fBanco"></select></div>
-        <div class="field"><label for="fPmTel">Teléfono del pago</label><input class="in" id="fPmTel" inputmode="tel" placeholder="0412-000-0000"/></div>
+        <div class="field"><label for="fBanco">Tu banco</label><select class="in" id="fBanco" name="banco"></select></div>
+        <div class="field"><label for="fPmTel">Teléfono del pago</label><input class="in" id="fPmTel" type="tel" inputmode="tel" spellcheck="false" placeholder="0412-000-0000…"/></div>
       </div>
       <div class="frow">
-        <div class="field"><label for="fCi">Cédula del titular</label><input class="in" id="fCi" inputmode="numeric" placeholder="V-12.345.678"/></div>
-        <div class="field"><label for="fOp">N° de referencia <small>(operación)</small></label><input class="in" id="fOp" inputmode="numeric" placeholder="Últimos 6 dígitos"/></div>
+        <div class="field"><label for="fCi">Cédula del titular</label><input class="in" id="fCi" inputmode="numeric" spellcheck="false" placeholder="V-12.345.678…"/></div>
+        <div class="field"><label for="fOp">N° de referencia <small>(operación)</small></label><input class="in" id="fOp" inputmode="numeric" spellcheck="false" placeholder="Últimos 6 dígitos…"/></div>
       </div>
       <div class="field"><label for="fMonto">Monto pagado <small>(Ref)</small></label><input class="in" id="fMonto" inputmode="decimal"/></div>
       <div class="field">
