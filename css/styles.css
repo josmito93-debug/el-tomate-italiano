@@ -1006,8 +1006,9 @@ body {
 
 /* ═══════════ SECCIÓN NUESTRA HISTORIA ═══════════ */
 .story {
-  padding: 100px 40px;
-  background: linear-gradient(180deg, var(--bg-dark) 0%, #efe8dc 100%);
+  padding: 96px 32px;
+  background: var(--bg-dark); /* Tono crema cálido uniforme */
+  border-top: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1016,13 +1017,13 @@ body {
 }
 
 .story__card {
-  max-width: 800px;
-  background: var(--bg-card);
-  border: 1px solid var(--oro);
-  padding: 50px 60px;
+  max-width: 840px;
+  background: var(--bg-dark); /* Beige idéntico al fondo */
+  border: 1px solid var(--border-color);
+  padding: 48px 56px;
   border-radius: var(--radius-outer);
   text-align: center;
-  box-shadow: 0 15px 35px rgba(44, 30, 28, 0.05);
+  box-shadow: 0 12px 30px rgba(44, 30, 28, 0.05);
   position: relative;
 }
 
@@ -1065,7 +1066,7 @@ body {
   gap: 8px;
   font-size: 0.85rem;
   color: var(--text-main);
-  background: var(--bg-light);
+  background: rgba(44, 30, 28, 0.03);
   padding: 8px 16px;
   border-radius: 30px;
   border: 1px solid var(--border-color);
@@ -1079,9 +1080,9 @@ body {
 
 /* ═══════════ FOOTER ═══════════ */
 .footer {
-  background: #f0e8dc;
+  background: var(--bg-dark); /* Tono crema cálido uniforme */
   border-top: 1px solid var(--border-color);
-  padding: 80px 40px 40px 40px;
+  padding: 80px 32px 48px 32px;
   position: relative;
   z-index: 5;
 }
@@ -1120,7 +1121,7 @@ body {
 }
 .footer__in .brand__n {
   font-family: var(--font-serif);
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: var(--rosso);
   font-weight: 800;
   line-height: 1.1;
@@ -1137,9 +1138,9 @@ body {
 .footer__claim {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: var(--text-muted);
-  max-width: 500px;
+  max-width: 520px;
   margin-bottom: 28px;
   line-height: 1.5;
 }
@@ -1147,7 +1148,7 @@ body {
 .footer__base {
   max-width: 1200px;
   margin: 0 auto;
-  border-top: 1px solid rgba(44, 30, 28, 0.1);
+  border-top: 1px solid var(--border-color);
   padding-top: 28px;
   display: flex;
   justify-content: space-between;
@@ -2075,7 +2076,9 @@ select.in {
   left: 0;
   width: 100%;
   height: 64px;
-  background: var(--panna-pure);
+  background: rgba(246, 241, 233, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border-color);
   z-index: 90;
   display: none;
