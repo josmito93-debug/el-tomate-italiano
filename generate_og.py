@@ -1,0 +1,130 @@
+import subprocess
+import time
+from PIL import Image
+
+# Create temporary HTML for rendering the exact brand banner
+html_content = """<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&family=Instrument+Sans:wght@600;700&display=swap');
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #f6f1e9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 80px;
+    font-family: 'Instrument Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .border-frame {
+    position: absolute;
+    inset: 16px;
+    border: 2px solid #c59b5f;
+    border-radius: 20px;
+    pointer-events: none;
+  }
+  
+  .left-content {
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+  }
+  
+  .brand-title {
+    font-family: 'Fraunces', serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: #8a1519;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  
+  .brand-sub {
+    font-size: 1.15rem;
+    color: #c59b5f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: rgba(44, 30, 28, 0.8);
+    line-height: 1.4;
+    margin-bottom: 32px;
+  }
+  
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #8a1519;
+    color: #fffdf9;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 20px rgba(138, 21, 25, 0.25);
+  }
+  
+  .right-photo {
+    position: relative;
+    width: 460px;
+    height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  .photo-ring {
+    position: absolute;
+    inset: -10px;
+    border: 3px solid #c59b5f;
+    border-radius: 50%;
+  }
+  
+  .photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 20px 40px rgba(44, 30, 28, 0.15);
+  }
+</style>
+</head>
+<body>
+  <div class="border-frame"></div>
+  <div class="left-content">
+    <div class="brand-title">El Tomate Italiano</div>
+    <div class="brand-sub">Cocina Tradicional Italiana</div>
+    <div class="tagline">Pasticho artesanal de capas perfectas, masa fresca y salsa bologna de cocción lenta.</div>
+    <div class="badge">🛵 Delivery & Pick Up · WhatsApp</div>
+  </div>
+  <div class="right-photo">
+    <div class="photo-ring"></div>
+    <img class="photo-img" src="file:///Users/josefigueroa/.gemini/antigravity/brain/32f390db-d411-4807-b627-e4e38f536afb/pasticho_tradicional_1785346793076.jpg" alt="Pasticho Real"/>
+  </div>
+</body>
+</html>
+"""
+
+with open('og_preview.html', 'w') as f:
+    f.write(html_content)
+
+print("HTML template generated.")
