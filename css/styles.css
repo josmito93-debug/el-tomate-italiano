@@ -759,8 +759,8 @@ body {
 
 .category__grid {
   display: grid;
-  grid-template-cols: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-cols: repeat(4, 1fr);
+  gap: 20px;
 }
 
 /* Tarjeta Editorial en Tono Crema Beige */
