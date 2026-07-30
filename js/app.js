@@ -658,13 +658,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepDivs = document.querySelectorAll(".step");
   const modeBtns = document.querySelectorAll(".mode");
 
-  function openCheckout() {
+  function openCheckout(initialStep = 2) {
     cartDrawer.classList.remove("on");
     checkoutPanel.classList.add("on");
     scrim.classList.add("on");
     orderBar.classList.remove("on");
     
-    // Pre-seleccionar Delivery por defecto si aún no hay modo activo
+    // Pre-seleccionar Delivery por defecto
     const deliveryBtn = document.querySelector('.mode[data-mode="delivery"]');
     if (deliveryBtn && !document.querySelector('.mode.on')) {
       deliveryBtn.classList.add("on");
@@ -675,19 +675,20 @@ document.addEventListener("DOMContentLoaded", () => {
       pickOnly.forEach(el => { el.setAttribute("hidden", "true"); el.style.display = "none"; });
     }
 
-    setStep(1);
+    setStep(initialStep);
   }
 
   function closeCheckout() {
     checkoutPanel.classList.remove("on");
+    scrim.classList.remove("on");
     toggleOrderBar();
   }
 
-  toCheckoutBtn.addEventListener("click", openCheckout);
+  toCheckoutBtn.addEventListener("click", () => openCheckout(2));
   
   if (coBackBtn) {
     coBackBtn.addEventListener("click", () => {
-      if (currentStep > 1) {
+      if (currentStep > 2) {
         setStep(currentStep - 1);
       } else {
         closeCheckout();
@@ -778,20 +779,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Continuar en el wizard
   coNextBtn.addEventListener("click", () => {
     if (currentStep === 1) {
-      const activeMode = document.querySelector(".mode.on");
-      if (!activeMode) {
-        showToast("Selecciona Delivery o Pick up");
-        return;
-      }
       setStep(2);
     } else if (currentStep === 2) {
       if (validateStep2()) {
         setStep(3);
       }
     } else if (currentStep === 3) {
-      if (validateStep3()) {
-        setStep(4);
-      }
+      setStep(4);
     } else if (currentStep === 4) {
       submitOrder();
     }
@@ -801,7 +795,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-mode-cta]").forEach(cta => {
     cta.addEventListener("click", () => {
       const mode = cta.getAttribute("data-mode-cta");
-      openCheckout();
+      openCheckout(2);
       
       const targetModeBtn = document.querySelector(`.mode[data-mode="${mode}"]`);
       if (targetModeBtn) {
@@ -962,7 +956,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Validación de Paso 3 (Ultra fluida: permite avanzar sin bloquear al cliente)
+  // Validación de Paso 3
   function validateStep3() {
     return true;
   }
@@ -994,8 +988,8 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // Datos de Entrega
-    const nombre = document.getElementById("fNombre").value.trim();
-    const tel = document.getElementById("fTel").value.trim();
+    const nombre = document.getElementById("fNombre").value.trim() || "Cliente";
+    const tel = document.getElementById("fTel").value.trim() || "N/A";
     
     let entregaHtml = `
       <li><span>Cliente</span><b>${nombre}</b></li>
@@ -1004,8 +998,8 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     if (checkoutMode === "delivery") {
-      const dir = document.getElementById("fDir").value.trim();
-      const ref = document.getElementById("fRef").value.trim() || "No especificada";
+      const dir = document.getElementById("fDir").value.trim() || "A coordinar";
+      const ref = document.getElementById("fRef").value.trim() || "N/A";
       entregaHtml += `
         <li><span>Dirección</span><b style="text-align:right;max-width:70%">${dir}</b></li>
         <li><span>Referencia</span><b style="text-align:right;max-width:70%">${ref}</b></li>
@@ -1030,7 +1024,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <li><span>Referencia</span><b>${opRef}</b></li>
       <li><span>C.I. Titular</span><b>${ciTitular}</b></li>
       <li><span>Monto reportado</span><b>Ref ${montoBsRef}</b></li>
-      <li><span>Comprobante</span><b style="color:var(--basilico)">${proofImg.src ? "Imagen lista ✔" : "Adjuntar en WhatsApp"}</b></li>
+      <li><span>Comprobante</span><b style="color:var(--basilico)">${proofImg && proofImg.src ? "Imagen lista ✔" : "Adjuntar en WhatsApp"}</b></li>
     `;
   }
 
@@ -1045,8 +1039,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function submitOrder() {
     orderNumber = `ETI-${Math.floor(1000 + Math.random() * 9000)}`;
     
-    const nombre = document.getElementById("fNombre").value.trim();
-    const tel = document.getElementById("fTel").value.trim();
+    const nombre = document.getElementById("fNombre").value.trim() || "Cliente";
+    const tel = document.getElementById("fTel").value.trim() || "N/A";
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
     const banco = document.getElementById("fBanco").value || "Por confirmar";
@@ -1057,7 +1051,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let deliveryDetails = "";
     if (checkoutMode === "delivery") {
-      const dir = document.getElementById("fDir").value.trim();
+      const dir = document.getElementById("fDir").value.trim() || "A coordinar en WhatsApp";
       const ref = document.getElementById("fRef").value.trim() || "N/A";
       deliveryDetails = `📍 *Dirección de Entrega:* ${dir}\n📌 *Punto de Referencia:* ${ref}`;
       if (userGpsCoordinates) {
@@ -1096,7 +1090,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(messageText)}`;
 
-    graciasWaBtn.setAttribute("href", waUrl);
+    // Mostrar pantalla Gracias
+    graciasPanel.classList.add("on");
+    checkoutPanel.classList.remove("on");
+    if (graciasNum) graciasNum.innerText = `Pedido #${orderNumber}`;
+    if (graciasWaBtn) graciasWaBtn.setAttribute("href", waUrl);
     
     const footWa = document.getElementById("footWa");
     if (footWa) footWa.setAttribute("href", waUrl);
