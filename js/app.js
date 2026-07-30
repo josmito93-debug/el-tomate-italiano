@@ -75,24 +75,26 @@ document.addEventListener("DOMContentLoaded", () => {
     "¡Listo para hornear!"
   ];
 
-  // Iniciar animación de trazado/aparición de paths con GSAP si está cargado
+  // Asegurar visibilidad de trazos en el SVG
   const svgPaths = document.querySelectorAll("#Layer_1 path");
+  svgPaths.forEach(p => { p.style.opacity = "1"; });
+
   if (svgPaths.length > 0 && window.gsap) {
     gsap.from(svgPaths, {
-      duration: 1.8,
+      duration: 1.4,
       opacity: 0,
-      scale: 0.9,
+      scale: 0.95,
       transformOrigin: "50% 50%",
       stagger: {
-        each: 0.003,
-        from: "random"
+        each: 0.002,
+        from: "start"
       },
       ease: "power2.out"
     });
   }
 
   const preloaderInterval = setInterval(() => {
-    progress += Math.floor(Math.random() * 4) + 1;
+    progress += Math.floor(Math.random() * 3) + 2;
     if (progress > 100) progress = 100;
 
     // Actualizar barra e indicadores
@@ -115,9 +117,18 @@ document.addEventListener("DOMContentLoaded", () => {
         // Iniciar animaciones de la página
         initEntranceAnimations();
         initFlourCanvas();
-      }, 600);
+      }, 400);
     }
-  }, 40);
+  }, 30);
+
+  // Fallback de seguridad: ocultar preloader tras 2.5s como máximo
+  setTimeout(() => {
+    if (preloader && !preloader.classList.contains("fade-out")) {
+      preloader.classList.add("fade-out");
+      initEntranceAnimations();
+      initFlourCanvas();
+    }
+  }, 2500);
 
   /* ════════════════════════════════════════════════════
      2. RENDERIZADO DEL MENÚ DIGITAL COMPLETO
