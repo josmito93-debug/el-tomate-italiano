@@ -140,20 +140,7 @@ body {
 
 /* ═══════════ ESTILOS DEL PRELOADER ═══════════ */
 .pre {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-dark);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  transition: opacity 0.8s var(--ease-in-out), visibility 0.8s;
-}
-
-.pre.fade-out {
-  opacity: 0;
-  visibility: hidden;
+  display: none !important;
 }
 
 .pre__stage {

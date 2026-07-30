@@ -58,84 +58,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ════════════════════════════════════════════════════
-     1. PRELOADER Y FLUJO DE INGRESO CON GSAP
+     1. INICIALIZACION E INGRESO CON GSAP
      ════════════════════════════════════════════════════ */
-  const preloader = document.getElementById("pre");
-  const preLogo = document.getElementById("preLogo");
-  const preFill = document.getElementById("preFill");
-  const prePct = document.getElementById("prePct");
-
-  let progress = 0;
-  const statusTexts = [
-    "Amasando la pasta fresca...",
-    "Reduciendo salsa napoli...",
-    "Cocinando bologna a fuego lento...",
-    "Preparando la bechamel...",
-    "Gratinando parmesano...",
-    "¡Listo para hornear!"
-  ];
-
-  // Animación de aparición estelar con GSAP para el emblema del preloader
   const svgPaths = document.querySelectorAll("#Layer_1 path");
-  if (svgPaths.length > 0 && window.gsap) {
-    try {
-      gsap.fromTo(svgPaths, 
-        { opacity: 0, scale: 0.85 },
-        {
-          duration: 1.2,
-          opacity: 1,
-          scale: 1,
-          transformOrigin: "50% 50%",
-          stagger: {
-            each: 0.003,
-            from: "random"
-          },
-          ease: "back.out(1.7)"
-        }
-      );
-    } catch (e) {
-      console.warn("GSAP preloader animation warning:", e);
-      svgPaths.forEach(p => { p.style.opacity = "1"; });
-    }
-  } else {
-    svgPaths.forEach(p => { p.style.opacity = "1"; });
+  svgPaths.forEach(p => { p.style.opacity = "1"; });
+
+  try {
+    initEntranceAnimations();
+    initFlourCanvas();
+  } catch (e) {
+    console.warn("Entrance animation warning:", e);
   }
-
-  function hidePreloader() {
-    if (preloader && !preloader.classList.contains("fade-out")) {
-      preloader.classList.add("fade-out");
-      try {
-        initEntranceAnimations();
-        initFlourCanvas();
-      } catch (e) {
-        console.warn("Entrance animation warning:", e);
-      }
-    }
-  }
-
-  const preloaderInterval = setInterval(() => {
-    progress += Math.floor(Math.random() * 4) + 2;
-    if (progress > 100) progress = 100;
-
-    // Actualizar barra e indicadores
-    if (preFill) preFill.style.width = `${progress}%`;
-    
-    if (prePct) {
-      const textIndex = Math.min(
-        Math.floor((progress / 100) * statusTexts.length),
-        statusTexts.length - 1
-      );
-      prePct.innerText = `${progress}% · ${statusTexts[textIndex]}`;
-    }
-
-    if (progress >= 100) {
-      clearInterval(preloaderInterval);
-      setTimeout(hidePreloader, 300);
-    }
-  }, 35);
-
-  // Fallback de seguridad infalible a 2.0s
-  setTimeout(hidePreloader, 2000);
 
   /* ════════════════════════════════════════════════════
      2. RENDERIZADO DEL MENÚ DIGITAL COMPLETO
