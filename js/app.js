@@ -453,12 +453,13 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Producto eliminado del pedido");
   }
 
-  // Calcular totales y redibujar interfaz del carrito
   function updateCartUI() {
     let totalItems = 0;
     let subtotal = 0;
 
-      toCheckoutBtn.disabled = false;
+    toCheckoutBtn.disabled = false;
+
+    if (cart.length === 0) {
       cartBody.innerHTML = `
         <div class="cart-empty">
           <svg class="icon"><use href="#i-bag"/></svg>
@@ -467,7 +468,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
     } else {
-      toCheckoutBtn.disabled = false;
       let html = "";
       
       cart.forEach(item => {
