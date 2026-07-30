@@ -1354,6 +1354,7 @@ body {
 }
 .cart-item__del:hover {
   color: var(--rosso);
+}
 /* Venta Sugerida (Upsell) en el Carrito */
 .cart-upsell {
   margin-top: 16px;
