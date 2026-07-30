@@ -1062,15 +1062,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const footWa = document.getElementById("footWa");
     if (footWa) footWa.setAttribute("href", waUrl);
 
-    // Redirigir a WhatsApp de forma instantánea e infalible
+    // Abrir WhatsApp en nueva pestaña
     try {
       window.open(waUrl, "_blank");
     } catch (e) {
-      console.warn("Popup warning:", e);
-    }
-    setTimeout(() => {
+      // fallback para dispositivos que bloquean popups
       window.location.href = waUrl;
-    }, 400);
+    }
 
     cart = [];
     localStorage.removeItem("eti_cart");
