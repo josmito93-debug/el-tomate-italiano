@@ -810,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ═══════════ DETALLES DEL PASO 2: GEOLOCALIZACIÓN Y VALIDACIÓN ═══════════ */
+  /* ═══════════ DETALLES DEL PASO 2: GEOLOCALIZACIÓN Y VALIDACIÓN (Amigable y rápida) ═══════════ */
   const geoBtn = document.getElementById("fGeo");
   
   if (geoBtn) {
@@ -841,7 +841,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Validación de Paso 2
+  // Validación de Paso 2 (Amigable y rápida)
   function validateStep2() {
     const nombre = document.getElementById("fNombre").value.trim();
     const tel = document.getElementById("fTel").value.trim().replace(/\D/g, "");
@@ -852,31 +852,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
-    if (tel.length < 10) {
-      showToast("Ingresa un número de celular válido");
+    if (tel.length < 7) {
+      showToast("Ingresa un número de celular válido (min 7 dígitos)");
       document.getElementById("fTel").focus();
       return false;
     }
 
     if (checkoutMode === "delivery") {
       const dir = document.getElementById("fDir").value.trim();
-      const ref = document.getElementById("fRef").value.trim();
-      
-      if (!dir || dir.length < 10) {
-        showToast("Detalla tu dirección de entrega (min 10 caracteres)");
+      if (!dir) {
+        showToast("Ingresa tu dirección de entrega");
         document.getElementById("fDir").focus();
-        return false;
-      }
-      if (!ref) {
-        showToast("Ingresa un punto de referencia");
-        document.getElementById("fRef").focus();
-        return false;
-      }
-    } else {
-      const hora = document.getElementById("fHora").value;
-      if (!hora) {
-        showToast("Indica la hora estimada a la que retirarás");
-        document.getElementById("fHora").focus();
         return false;
       }
     }
@@ -884,12 +870,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  /* ═══════════ DETALLES DEL PASO 3: BANCOS, COPY, FILE UPLOAD Y VALIDACIÓN ═══════════ */
+  /* ═══════════ DETALLES DEL PASO 3: BANCOS Y VALIDACIÓN PERMISIVA ═══════════ */
   function populateBanks() {
     const select = document.getElementById("fBanco");
     if (!select || select.children.length > 0) return;
     
-    let html = `<option value="">Selecciona tu banco origen...</option>`;
+    let html = `<option value="Banco Origen">Selecciona tu banco origen...</option>`;
     CONFIG.bancosVenezuela.forEach(bank => {
       html += `<option value="${bank.name}">${bank.name}</option>`;
     });
@@ -900,18 +886,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".copy").forEach(btn => {
     btn.addEventListener("click", () => {
       const targetId = btn.getAttribute("data-copy");
-      const targetText = document.getElementById(targetId).innerText;
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
       
-      navigator.clipboard.writeText(targetText).then(() => {
-        showToast("Copiado: " + targetText);
-        
-        const oldHtml = btn.innerHTML;
-        btn.innerHTML = `<svg class="icon" style="color:var(--basilico)"><use href="#i-check"/></svg>`;
-        setTimeout(() => {
-          btn.innerHTML = oldHtml;
-        }, 1500);
-      }).catch(err => {
-        console.error("Fallo al copiar", err);
+      const text = targetEl.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copiado: ${text}`);
+      }).catch(() => {
+        showToast(`Copiado: ${text}`);
       });
     });
   });
@@ -932,9 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dropZone.classList.add("dragover");
     });
     
-    ["dragleave", "dragend"].forEach(type => {
-      dropZone.addEventListener(type, () => dropZone.classList.remove("dragover"));
-    });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
     
     dropZone.addEventListener("drop", (e) => {
       e.preventDefault();
@@ -982,44 +962,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Validación de Paso 3
+  // Validación de Paso 3 (Ultra fluida: permite avanzar sin bloquear al cliente)
   function validateStep3() {
-    const banco = document.getElementById("fBanco").value;
-    const tel = document.getElementById("fPmTel").value.trim().replace(/\D/g, "");
-    const ci = document.getElementById("fCi").value.trim();
-    const op = document.getElementById("fOp").value.trim();
-    const monto = document.getElementById("fMonto").value.trim();
-
-    if (!banco) {
-      showToast("Selecciona tu banco origen");
-      document.getElementById("fBanco").focus();
-      return false;
-    }
-    if (tel.length < 10) {
-      showToast("Ingresa el número celular de tu pago móvil");
-      document.getElementById("fPmTel").focus();
-      return false;
-    }
-    if (!ci) {
-      showToast("Ingresa la cédula del titular");
-      document.getElementById("fCi").focus();
-      return false;
-    }
-    if (op.length !== 6) {
-      showToast("Ingresa los últimos 6 dígitos de la referencia");
-      document.getElementById("fOp").focus();
-      return false;
-    }
-    if (!monto || parseFloat(monto) <= 0) {
-      showToast("Ingresa un monto pagado válido");
-      document.getElementById("fMonto").focus();
-      return false;
-    }
-    if (!proofImg.src || proofImg.src === "") {
-      showToast("Por favor carga una captura del comprobante");
-      return false;
-    }
-
     return true;
   }
 
@@ -1061,14 +1005,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (checkoutMode === "delivery") {
       const dir = document.getElementById("fDir").value.trim();
-      const ref = document.getElementById("fRef").value.trim();
+      const ref = document.getElementById("fRef").value.trim() || "No especificada";
       entregaHtml += `
         <li><span>Dirección</span><b style="text-align:right;max-width:70%">${dir}</b></li>
         <li><span>Referencia</span><b style="text-align:right;max-width:70%">${ref}</b></li>
         ${userGpsCoordinates ? `<li><span>GPS</span><b style="color:var(--basilico)">Ubicación adjunta ✔</b></li>` : ""}
       `;
     } else {
-      const hora = document.getElementById("fHora").value;
+      const hora = document.getElementById("fHora").value || "Por acordar";
       entregaHtml += `
         <li><span>Hora de retiro</span><b>${hora}</b></li>
       `;
@@ -1076,17 +1020,17 @@ document.addEventListener("DOMContentLoaded", () => {
     sumEntrega.innerHTML = entregaHtml;
 
     // Datos de Pago
-    const banco = document.getElementById("fBanco").value;
-    const opRef = document.getElementById("fOp").value.trim();
-    const ciTitular = document.getElementById("fCi").value.trim();
-    const montoBsRef = document.getElementById("fMonto").value.trim();
+    const banco = document.getElementById("fBanco").value || "Por confirmar";
+    const opRef = document.getElementById("fOp").value.trim() || "Pendiente";
+    const ciTitular = document.getElementById("fCi").value.trim() || "N/A";
+    const montoBsRef = document.getElementById("fMonto").value.trim() || subtotal;
 
     sumPago.innerHTML = `
       <li><span>Banco origen</span><b>${banco}</b></li>
       <li><span>Referencia</span><b>${opRef}</b></li>
       <li><span>C.I. Titular</span><b>${ciTitular}</b></li>
       <li><span>Monto reportado</span><b>Ref ${montoBsRef}</b></li>
-      <li><span>Comprobante</span><b style="color:var(--basilico)">Imagen lista ✔</b></li>
+      <li><span>Comprobante</span><b style="color:var(--basilico)">${proofImg.src ? "Imagen lista ✔" : "Adjuntar en WhatsApp"}</b></li>
     `;
   }
 
@@ -1105,22 +1049,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const tel = document.getElementById("fTel").value.trim();
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
-    const banco = document.getElementById("fBanco").value;
-    const pmTel = document.getElementById("fPmTel").value.trim();
-    const ci = document.getElementById("fCi").value.trim();
-    const op = document.getElementById("fOp").value.trim();
-    const monto = document.getElementById("fMonto").value.trim();
+    const banco = document.getElementById("fBanco").value || "Por confirmar";
+    const pmTel = document.getElementById("fPmTel").value.trim() || tel;
+    const ci = document.getElementById("fCi").value.trim() || "N/A";
+    const op = document.getElementById("fOp").value.trim() || "Por enviar";
+    const monto = document.getElementById("fMonto").value.trim() || subtotal;
 
     let deliveryDetails = "";
     if (checkoutMode === "delivery") {
       const dir = document.getElementById("fDir").value.trim();
-      const ref = document.getElementById("fRef").value.trim();
+      const ref = document.getElementById("fRef").value.trim() || "N/A";
       deliveryDetails = `📍 *Dirección de Entrega:* ${dir}\n📌 *Punto de Referencia:* ${ref}`;
       if (userGpsCoordinates) {
         deliveryDetails += `\n🗺️ *Ubicación GPS:* https://maps.google.com/?q=${userGpsCoordinates}`;
       }
     } else {
-      const hora = document.getElementById("fHora").value;
+      const hora = document.getElementById("fHora").value || "Por acordar";
       deliveryDetails = `🏪 *Hora estimada de retiro (Pick up):* ${hora}`;
     }
 
