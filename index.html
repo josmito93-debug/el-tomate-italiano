@@ -1020,6 +1020,14 @@
   </div>
 </div>
 
+<script>
+  // Fallback de emergencia infalible inline: El preloader NUNCA se congela
+  setTimeout(function() {
+    var p = document.getElementById("pre");
+    if (p) p.classList.add("fade-out");
+  }, 1200);
+</script>
+
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
 <!-- ═══════════ TOPBAR ═══════════ -->

@@ -22,40 +22,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Clonar e inyectar el logo SVG en las secciones respectivas
-  const brandLogoSrc = document.getElementById("Layer_1");
-  if (brandLogoSrc) {
-    // Clonar para Header y Footer
-    document.querySelectorAll(".brand__logo-slot").forEach(slot => {
-      const clone = brandLogoSrc.cloneNode(true);
-      clone.removeAttribute("id");
-      clone.style.width = "100%";
-      clone.style.height = "100%";
-      clone.style.margin = "0";
-      // Asegurar visibilidad sin depender del estado del preloader
-      clone.querySelectorAll("path").forEach(p => {
-        p.style.opacity = "1";
-        p.style.transform = "none";
+  // Clonar e inyectar el logo SVG de forma segura con try...catch
+  try {
+    const brandLogoSrc = document.getElementById("Layer_1");
+    if (brandLogoSrc && brandLogoSrc.cloneNode) {
+      document.querySelectorAll(".brand__logo-slot").forEach(slot => {
+        const clone = brandLogoSrc.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.style.width = "100%";
+        clone.style.height = "100%";
+        clone.style.margin = "0";
+        clone.querySelectorAll("path").forEach(p => {
+          p.style.opacity = "1";
+          p.style.transform = "none";
+        });
+        slot.appendChild(clone);
       });
-      slot.appendChild(clone);
-    });
 
-    // Clonar para el modal de Gracias
-    const grazieSlot = document.querySelector(".grazie__logo-slot");
-    if (grazieSlot) {
-      const clone = brandLogoSrc.cloneNode(true);
-      clone.removeAttribute("id");
-      clone.style.width = "100%";
-      clone.style.height = "100%";
-      clone.style.margin = "0";
-      clone.querySelectorAll("path").forEach(p => {
-        p.style.opacity = "1";
-        p.style.transform = "none";
-      });
-      grazieSlot.appendChild(clone);
+      const grazieSlot = document.querySelector(".grazie__logo-slot");
+      if (grazieSlot) {
+        const clone = brandLogoSrc.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.style.width = "100%";
+        clone.style.height = "100%";
+        clone.style.margin = "0";
+        clone.querySelectorAll("path").forEach(p => {
+          p.style.opacity = "1";
+          p.style.transform = "none";
+        });
+        grazieSlot.appendChild(clone);
+      }
     }
+  } catch (err) {
+    console.warn("Logo clone warning:", err);
   }
-
 
   /* ════════════════════════════════════════════════════
      1. PRELOADER Y FLUJO DE INGRESO CON GSAP
@@ -80,21 +80,37 @@ document.addEventListener("DOMContentLoaded", () => {
   svgPaths.forEach(p => { p.style.opacity = "1"; });
 
   if (svgPaths.length > 0 && window.gsap) {
-    gsap.from(svgPaths, {
-      duration: 1.4,
-      opacity: 0,
-      scale: 0.95,
-      transformOrigin: "50% 50%",
-      stagger: {
-        each: 0.002,
-        from: "start"
-      },
-      ease: "power2.out"
-    });
+    try {
+      gsap.from(svgPaths, {
+        duration: 1.0,
+        opacity: 0,
+        scale: 0.95,
+        transformOrigin: "50% 50%",
+        stagger: {
+          each: 0.002,
+          from: "start"
+        },
+        ease: "power2.out"
+      });
+    } catch (e) {
+      console.warn("GSAP warning:", e);
+    }
+  }
+
+  function hidePreloader() {
+    if (preloader && !preloader.classList.contains("fade-out")) {
+      preloader.classList.add("fade-out");
+      try {
+        initEntranceAnimations();
+        initFlourCanvas();
+      } catch (e) {
+        console.warn("Entrance animation warning:", e);
+      }
+    }
   }
 
   const preloaderInterval = setInterval(() => {
-    progress += Math.floor(Math.random() * 3) + 2;
+    progress += Math.floor(Math.random() * 5) + 5;
     if (progress > 100) progress = 100;
 
     // Actualizar barra e indicadores
@@ -108,27 +124,14 @@ document.addEventListener("DOMContentLoaded", () => {
       prePct.innerText = `${progress}% · ${statusTexts[textIndex]}`;
     }
 
-    if (progress === 100) {
+    if (progress >= 100) {
       clearInterval(preloaderInterval);
-      setTimeout(() => {
-        // Ocultar preloader
-        if (preloader) preloader.classList.add("fade-out");
-        
-        // Iniciar animaciones de la página
-        initEntranceAnimations();
-        initFlourCanvas();
-      }, 400);
+      setTimeout(hidePreloader, 150);
     }
-  }, 30);
+  }, 25);
 
-  // Fallback de seguridad: ocultar preloader tras 2.5s como máximo
-  setTimeout(() => {
-    if (preloader && !preloader.classList.contains("fade-out")) {
-      preloader.classList.add("fade-out");
-      initEntranceAnimations();
-      initFlourCanvas();
-    }
-  }, 2500);
+  // Fallback de seguridad infalible
+  setTimeout(hidePreloader, 1200);
 
   /* ════════════════════════════════════════════════════
      2. RENDERIZADO DEL MENÚ DIGITAL COMPLETO
