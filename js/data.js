@@ -126,13 +126,13 @@ const MENU_DATA = {
 
 // Datos para la transferencia de Pago Móvil (Venezuela)
 const CONFIG = {
-  whatsappNumber: "584123456789", // Reemplazar con el número del restaurante en formato internacional
+  whatsappNumber: "584142095922", // Número oficial de El Tomate Italiano (Arturo Riccardi)
   pagoMovil: {
     banco: "BANCO DE VENEZUELA",
     codigoBanco: "0102",
-    telefono: "0412-5555555",
+    telefono: "0414-2095922",
     ci: "V-20123456",
-    titular: "EL TOMATE ITALIANO C.A."
+    titular: "ARTURO RICCARDI"
   },
   bancosVenezuela: [
     { code: "0102", name: "Banco de Venezuela" },

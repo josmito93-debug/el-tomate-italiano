@@ -18,6 +18,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css"/>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"El Tomate Italiano","servesCuisine":["Italiana","Pasticho"],"slogan":"Pastichos artesanales · Cocina tradicional italiana","priceRange":"$$","acceptsReservations":"False","hasMenu":{"@type":"Menu","hasMenuSection":[{"@type":"MenuSection","name":"Pastichos"},{"@type":"MenuSection","name":"Salsas"}]},"areaServed":"Venezuela"}
 </script>
@@ -1025,7 +1027,7 @@
   setTimeout(function() {
     var p = document.getElementById("pre");
     if (p) p.classList.add("fade-out");
-  }, 1200);
+  }, 2200);
 </script>
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
@@ -1294,8 +1296,6 @@
 <div class="fly" id="fly"></div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="js/vendor/gsap.min.js"></script>
-<script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 </body>

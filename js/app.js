@@ -75,26 +75,30 @@ document.addEventListener("DOMContentLoaded", () => {
     "¡Listo para hornear!"
   ];
 
-  // Asegurar visibilidad de trazos en el SVG
+  // Animación de aparición estelar con GSAP para el emblema del preloader
   const svgPaths = document.querySelectorAll("#Layer_1 path");
-  svgPaths.forEach(p => { p.style.opacity = "1"; });
-
   if (svgPaths.length > 0 && window.gsap) {
     try {
-      gsap.from(svgPaths, {
-        duration: 1.0,
-        opacity: 0,
-        scale: 0.95,
-        transformOrigin: "50% 50%",
-        stagger: {
-          each: 0.002,
-          from: "start"
-        },
-        ease: "power2.out"
-      });
+      gsap.fromTo(svgPaths, 
+        { opacity: 0, scale: 0.85 },
+        {
+          duration: 1.2,
+          opacity: 1,
+          scale: 1,
+          transformOrigin: "50% 50%",
+          stagger: {
+            each: 0.003,
+            from: "random"
+          },
+          ease: "back.out(1.7)"
+        }
+      );
     } catch (e) {
-      console.warn("GSAP warning:", e);
+      console.warn("GSAP preloader animation warning:", e);
+      svgPaths.forEach(p => { p.style.opacity = "1"; });
     }
+  } else {
+    svgPaths.forEach(p => { p.style.opacity = "1"; });
   }
 
   function hidePreloader() {
@@ -110,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const preloaderInterval = setInterval(() => {
-    progress += Math.floor(Math.random() * 5) + 5;
+    progress += Math.floor(Math.random() * 4) + 2;
     if (progress > 100) progress = 100;
 
     // Actualizar barra e indicadores
@@ -126,12 +130,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (progress >= 100) {
       clearInterval(preloaderInterval);
-      setTimeout(hidePreloader, 150);
+      setTimeout(hidePreloader, 300);
     }
-  }, 25);
+  }, 35);
 
-  // Fallback de seguridad infalible
-  setTimeout(hidePreloader, 1200);
+  // Fallback de seguridad infalible a 2.0s
+  setTimeout(hidePreloader, 2000);
 
   /* ════════════════════════════════════════════════════
      2. RENDERIZADO DEL MENÚ DIGITAL COMPLETO
@@ -1111,18 +1115,29 @@ document.addEventListener("DOMContentLoaded", () => {
       `----------------------------------------\n` +
       `⚠️ _Adjunto a este mensaje la captura de mi pago móvil._`;
 
-    const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(messageText)}`;
+    const waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encodeURIComponent(messageText)}`;
 
     // Mostrar pantalla Gracias
     graciasPanel.classList.add("on");
     checkoutPanel.classList.remove("on");
     if (graciasNum) graciasNum.innerText = `Pedido #${orderNumber}`;
-    if (graciasWaBtn) graciasWaBtn.setAttribute("href", waUrl);
+    if (graciasWaBtn) {
+      graciasWaBtn.setAttribute("href", waUrl);
+      graciasWaBtn.setAttribute("target", "_blank");
+    }
     
     const footWa = document.getElementById("footWa");
     if (footWa) footWa.setAttribute("href", waUrl);
 
-    window.open(waUrl, "_blank");
+    // Redirigir a WhatsApp de forma instantánea e infalible
+    try {
+      window.open(waUrl, "_blank");
+    } catch (e) {
+      console.warn("Popup warning:", e);
+    }
+    setTimeout(() => {
+      window.location.href = waUrl;
+    }, 400);
 
     cart = [];
     localStorage.removeItem("eti_cart");
