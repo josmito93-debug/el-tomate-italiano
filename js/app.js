@@ -507,15 +507,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalItems = 0;
     let subtotal = 0;
 
-    if (cart.length === 0) {
+      toCheckoutBtn.disabled = false;
       cartBody.innerHTML = `
         <div class="cart-empty">
           <svg class="icon"><use href="#i-bag"/></svg>
           <p>Tu pedido está vacío por ahora.</p>
-          <small style="display:block;margin-top:8px;opacity:0.6">¡Date una vuelta por el menú!</small>
+          <small style="display:block;margin-top:8px;opacity:0.6">¡Date una vuelta por el menú para agregar tu pasticho!</small>
         </div>
       `;
-      toCheckoutBtn.disabled = true;
     } else {
       toCheckoutBtn.disabled = false;
       let html = "";
@@ -684,7 +683,17 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleOrderBar();
   }
 
-  toCheckoutBtn.addEventListener("click", () => openCheckout(2));
+  toCheckoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      showToast("¡Agrega al menos un pasticho o salsa a tu pedido primero!");
+      closeCart();
+      const menuSection = document.getElementById("menu");
+      if (menuSection) menuSection.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    openCheckout(2);
+  });
   
   if (coBackBtn) {
     coBackBtn.addEventListener("click", () => {
